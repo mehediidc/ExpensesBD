@@ -1,4 +1,4 @@
-name: Build React Native Android APK
+name: Build Android APK
 
 on:
   push:
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Source Code
         uses: actions/checkout@v4
 
       - name: Set up Java JDK 17
@@ -27,18 +27,18 @@ jobs:
         run: |
           npm install
 
-      - name: Generate Android Native Project Files
+      - name: Prebuild Native Android Folder
         run: |
-          npx react-native config
+          npx expo prebuild --platform android
 
-      - name: Build Android Debug APK
+      - name: Build Debug APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      - name: Upload APK
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ReactNativeTracker-debug.apk
+          name: ExpenseTracker-debug.apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
